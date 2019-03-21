@@ -10,7 +10,11 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "vue": "^2.5.22",
+    "bootstrap": "^4.3.1",
+    "bootstrap-vue": "^2.0.0-rc.13",
+    "generator-chrome-extension": "^0.7.1",
+    "moment": "^2.24.0",
+    "vue": "^2.6.7",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },
@@ -26,7 +30,7 @@
     "chai": "^4.1.2",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
-    "vue-template-compiler": "^2.5.21"
+    "vue-template-compiler": "^2.6.7"
   },
   "eslintConfig": {
     "root": true,
@@ -37,10 +41,23 @@
       "plugin:vue/essential",
       "@vue/prettier"
     ],
-    "rules": {},
+    "rules": {
+      "vue/html-self-closing": "off"
+    },
+    "globals": {
+      "chrome": "writable",
+      "router": "writable",
+      "moment": "writable"
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }
+  },
+  "prettier": {
+    "tabWitdth": 2,
+    "singleQuote": true,
+    "semi": false,
+    "printWidth": 120
   },
   "postcss": {
     "plugins": {
