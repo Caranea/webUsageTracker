@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view />
+    <v-app light>
+      <router-view/>
+    </v-app>
   </div>
 </template>
 
@@ -11,7 +13,5 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  width: 700px;
-  height: 700px;
 }
 </style>

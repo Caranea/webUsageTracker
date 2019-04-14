@@ -1,0 +1,20 @@
+{
+    "name": "Personal Activity Monitor",
+    "version": "1.0",
+    "description": "Monitor your web activity and increase efectiveness with chrome extension",
+    "permissions": ["activeTab", "idle", "declarativeContent", "storage", "tabs", "webNavigation", "windows", "http://localhost:5000/*"],
+    "background": {
+      "page": "background.html"
+    },
+    "browser_action": {
+      "default_popup": "index.html",
+      "default_icon": {
+        "16": "assets/fox.png",
+        "32": "assets/get_started32.png",
+        "48": "assets/get_started48.png",
+        "128": "assets/get_started128.png"
+      }
+    },
+    "manifest_version": 2
+  }
+  
