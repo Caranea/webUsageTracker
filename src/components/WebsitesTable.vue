@@ -36,10 +36,7 @@ export default {
         { text: 'Domain', align: 'center', width: '33%', value: 'url' },
         { text: 'Total time', align: 'center', width: '33%', value: 'timeSpent' },
         { text: 'Category', align: 'center', width: '33%', value: 'category' }
-      ],
-      period: [0],
-      dataType: [0],
-      viewMode: [0]
+      ]
     }
   }
 }

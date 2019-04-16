@@ -6,10 +6,13 @@ function daysAgo(date) {
 }
 
 function dateOnlyFormat(date) {
+    console.log(date)
     return new Date(new Date(date) - timeZoneOffset).toISOString().substr(0, 10)
 }
 
 function dateAndTimeFormat(date) {
+    console.log(date)
+
     return new Date(new Date(date) - timeZoneOffset).toISOString().substr(0, 19)
 }
 

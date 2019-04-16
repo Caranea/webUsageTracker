@@ -31,9 +31,9 @@
           </v-flex>
           <v-divider class="my-2" inset vertical></v-divider>
           <v-flex>
-            <v-btn-toggle v-model="ViewMode" class="transparent" max="100" mandatory>
-              <v-btn small :value="table" flat>Table</v-btn>
-              <v-btn small :value="chart" flat>Chart</v-btn>
+            <v-btn-toggle v-model="viewMode" class="transparent" max="100" mandatory>
+              <v-btn small :value="'table'" flat>Table</v-btn>
+              <v-btn small :value="'chart'" flat>Chart</v-btn>
             </v-btn-toggle>
           </v-flex>
           <v-divider class="my-2" inset vertical></v-divider>
@@ -55,7 +55,8 @@
         <v-btn class="mr-0" small color="primary">Download PDF report</v-btn>
       </v-flex>
       <v-flex>
-        <websites-table :websites="websites" :loading="loading"></websites-table>
+        <websites-table v-if="viewMode === 'table'" :websites="websites" :loading="loading"></websites-table>
+        <websites-chart v-if="viewMode === 'chart'" :websites="websites" :loading="loading"></websites-chart>
       </v-flex>
     </v-layout>
   </v-container>
@@ -66,11 +67,13 @@ import { fetchReport } from '../services/report.service.js'
 import { logout } from '../services/user.service.js'
 import { dateOnlyFormat, firstDayOfTheWeek, firstDayOfTheMonth } from '../mixins/dateUtils.js'
 import WebsitesTable from '../components/WebsitesTable.vue'
+import WebsitesChart from '../components/WebsitesChart.vue'
 
 export default {
   props: ['user'],
   components: {
-    WebsitesTable
+    WebsitesTable,
+    WebsitesChart
   },
   data() {
     return {
@@ -81,7 +84,10 @@ export default {
       today: dateOnlyFormat(new Date()),
       firstDayOfTheWeek: firstDayOfTheWeek,
       firstDayOfTheMonth: firstDayOfTheMonth,
-      date: ''
+      date: '',
+      period: [0],
+      dataType: [0],
+      viewMode: 'table'
     }
   },
   created() {
@@ -90,13 +96,14 @@ export default {
   methods: {
     async getReport(from, to) {
       this.loading = true
-      let report = await fetchReport(from, to)
+      const milliseconds = this.viewMode === 'chart'
+      let report = await fetchReport(from, to, milliseconds)
       if (report.websites) {
         this.websites = report.websites
       }
       this.dialog = false
       this.loading = false
-      this.date = dateOnlyFormat(from)
+      this.date = from ? dateOnlyFormat(from) : this.today
     }
   }
 }
