@@ -4,7 +4,6 @@
     :headers="headers"
     :items="websites"
     :search="search"
-    :loading="loading"
     class="elevation-1"
   >
     <template v-slot:items="props">
@@ -43,13 +42,4 @@ export default {
 </script>
 
 <style scoped>
-/* // .dashboard table.v-table {
-//   tbody th,
-//   tbody td {
-//     height: 35px;
-//   }
-//   thead tr {
-//     height: 40px;
-//   }
-// } */
 </style>

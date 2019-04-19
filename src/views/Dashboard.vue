@@ -1,6 +1,7 @@
 <template>
   <v-container grid-list-xl class="dashboard">
     <v-layout column>
+      <Spinner v-if="loading"></Spinner>
       <v-flex>
         <v-layout row justify-space-between>
           <span class="headline ml-3 mt-1">Hello, {{ user.name }}</span>
@@ -46,17 +47,21 @@
         </v-layout>
       </v-flex>
       <v-flex class="py-1" d-flex justify-space-between>
-        <v-chip class="ml-0" label color="success" text-color="white">
+        <v-chip class="info-span ml-0" label color="success" text-color="white">
           <v-avatar>
             <v-icon>check_circle</v-icon>
           </v-avatar>
-          {{loading ? 'Refreshing data... ' : `Displaying data ${date === today ? ('from ' + today) : ('from ' + date + ' to '+today)}`}}
+          {{
+            loading
+              ? 'Refreshing data... '
+              : `Displaying data ${date === today ? 'from ' + today : 'from ' + date + ' to ' + today}`
+          }}
         </v-chip>
         <v-btn class="mr-0" small color="primary">Download PDF report</v-btn>
       </v-flex>
       <v-flex>
-        <websites-table v-if="viewMode === 'table'" :websites="websites" :loading="loading"></websites-table>
-        <websites-chart v-if="viewMode === 'chart'" :websites="websites" :loading="loading"></websites-chart>
+        <websites-table v-if="viewMode === 'table'" :websites="websites"></websites-table>
+        <websites-chart v-if="viewMode === 'chart'" :websites="websites"></websites-chart>
       </v-flex>
     </v-layout>
   </v-container>
@@ -65,15 +70,17 @@
 <script>
 import { fetchReport } from '../services/report.service.js'
 import { logout } from '../services/user.service.js'
-import { dateOnlyFormat, firstDayOfTheWeek, firstDayOfTheMonth } from '../mixins/dateUtils.js'
+import { dateOnlyFormat, firstDayOfTheWeek, firstDayOfTheMonth, setMidnight } from '../mixins/dateUtils.js'
 import WebsitesTable from '../components/WebsitesTable.vue'
 import WebsitesChart from '../components/WebsitesChart.vue'
+import Spinner from '../components/Spinner.vue'
 
 export default {
   props: ['user'],
   components: {
     WebsitesTable,
-    WebsitesChart
+    WebsitesChart,
+    Spinner
   },
   data() {
     return {
@@ -105,11 +112,19 @@ export default {
       this.loading = false
       this.date = from ? dateOnlyFormat(from) : this.today
     }
+  },
+  watch: {
+    viewMode: function() {
+      this.getReport(setMidnight(new Date(this.date)))
+    }
   }
 }
 </script>
 
 <style>
+.info-span {
+  min-width: 400px;
+}
 .dashboard table.v-table tbody td,
 table.v-table tbody th {
   height: 35px;

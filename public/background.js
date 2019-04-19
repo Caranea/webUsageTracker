@@ -1,6 +1,6 @@
 let userId, entryTime, report, currentUrl, reportingInProgress = false
-
 chrome.idle.setDetectionInterval(300)
+chrome.storage.sync.set({ user: null }, () => {})
 chrome.storage.onChanged.addListener(changes => {
     changes.user && changes.user.newValue === null ? stopTracking() : startTracking(changes.user.newValue._id)
 })
@@ -77,7 +77,7 @@ class Report {
     constructor() {
         this.timeSpent = Date.now() - entryTime
         this.url = currentUrl.split('/')[2]
-        this.time = (new Date).toISOString().substring(0, 19)
+        this.time = new Date(new Date() - (new Date().getTimezoneOffset() * 60000)).toISOString().substring(0, 19)
         this.userId = userId
     }
     async post() {
