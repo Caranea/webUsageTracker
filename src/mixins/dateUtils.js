@@ -34,16 +34,34 @@ function firstDayOfTheMonth() {
 
 function timeFromMs(millisec) {
   let seconds = (millisec / 1000).toFixed(0)
-  let minutes = Math.floor(parseInt(seconds) / 60) < 10 ? '0' + Math.floor(parseInt(seconds) / 60) : Math.floor(parseInt(seconds) / 60)
+  let minutes =
+    Math.floor(parseInt(seconds) / 60) < 10
+      ? '0' + Math.floor(parseInt(seconds) / 60)
+      : Math.floor(parseInt(seconds) / 60)
   let hours = '00'
 
   if (parseInt(minutes) > 59) {
-    hours = Math.floor(parseInt(minutes) / 60) < 10 ? '0' + Math.floor(parseInt(minutes) / 60) : Math.floor(parseInt(minutes) / 60)
-    minutes = parseInt(minutes) - (parseInt(hours) * 60)
+    hours =
+      Math.floor(parseInt(minutes) / 60) < 10
+        ? '0' + Math.floor(parseInt(minutes) / 60)
+        : Math.floor(parseInt(minutes) / 60)
+    minutes = parseInt(minutes) - parseInt(hours) * 60
   }
-  seconds = Math.floor(parseInt(seconds) % 60) < 10 ? '0' + Math.floor(parseInt(seconds) % 60) : Math.floor(parseInt(seconds) % 60)
+  seconds =
+    Math.floor(parseInt(seconds) % 60) < 10
+      ? '0' + Math.floor(parseInt(seconds) % 60)
+      : Math.floor(parseInt(seconds) % 60)
 
   return `${hours}:${minutes}:${seconds}`
 }
 
-export { daysAgo, dateOnlyFormat, firstDayOfTheMonth, firstDayOfTheWeek, todaysMidnight, dateAndTimeFormat, timeFromMs, setMidnight }
+export {
+  daysAgo,
+  dateOnlyFormat,
+  firstDayOfTheMonth,
+  firstDayOfTheWeek,
+  todaysMidnight,
+  dateAndTimeFormat,
+  timeFromMs,
+  setMidnight
+}

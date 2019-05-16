@@ -1,66 +1,71 @@
 <template>
-  <div class="row mt-5">
-    <div class="col-md-6 m-auto">
-      <div class="card card-body">
-        <h1 class="text-center mb-3"><i class="fas fa-user-plus"></i> Register</h1>
-        <div ref="success" class="d-none p-3 mb-2 bg-success text-white">
-          Registration successful! You can now
-          <router-link to="/login" class="btn btn-primary btn-block mb-2">Login</router-link>
-        </div>
-        <div ref="failure" class="d-none p-3 mb-2 bg-warning text-white">
-          <ul>
-            <li v-for="error in errors" :key="error.id">
-              {{ error.error }}
-            </li>
-          </ul>
-        </div>
-        <form id="registerForm">
-          <div class="form-group">
-            <label for="name">Name</label>
-            <input type="name" id="name" name="name" class="form-control" placeholder="Enter Name" v-model="name" />
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              class="form-control"
-              placeholder="Enter Email"
-              v-model="email"
-            />
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              class="form-control"
-              placeholder="Create Password"
+  <v-layout>
+    <v-flex xs12 sm6 mt-5 offset-sm3>
+      <v-card>
+        <v-container fill-height fluid pb-0>
+          <v-layout fill-height>
+            <v-flex xs12 align-end flexbox>
+              <span class="headline">Register</span>
+            </v-flex>
+          </v-layout>
+        </v-container>
+        <v-card-title class="pt-0">
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-chip
+              class="info-span ml-0 d-none"
+              label
+              color="success"
+              ref="success"
+              text-color="white"
+            >
+              <v-avatar>
+                <v-icon color="white">done</v-icon>
+              </v-avatar>Registration successful! You can now 
+              <router-link to="/login" text-color="white">&nbsp;login</router-link>
+            </v-chip>
+            <v-layout ref="failure">
+              <v-list>
+                <v-list-tile v-for="error in errors" :key="error.id" avatar>
+                  <v-list-tile-avatar>
+                    <v-icon color="error">error</v-icon>
+                  </v-list-tile-avatar>
+                  <v-list-tile-content>
+                    <v-list-tile-title>{{error.error}}</v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+              </v-list>
+            </v-layout>
+            <v-text-field v-model="name" :rules="nameRules" label="Name" required></v-text-field>
+            <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
+            <v-text-field
               v-model="password"
-            />
-          </div>
-          <div class="form-group">
-            <label for="password2">Confirm Password</label>
-            <input
               type="password"
-              id="password2"
-              name="password2"
-              class="form-control"
-              placeholder="Confirm Password"
+              hint="At least 6 characters"
+              :rules="passwordRules"
+              label="Password"
+              required
+            ></v-text-field>
+            <v-text-field
               v-model="password2"
-            />
-          </div>
-          <a @click="register" class="btn btn-primary btn-block">Register</a>
-        </form>
-        <p class="lead mt-4">
-          Have An Account?
-          <router-link to="/login" class="btn btn-primary btn-block mb-2">Login</router-link>
-        </p>
-      </div>
-    </div>
-  </div>
+              type="password"
+              hint="Retype your password"
+              :rules="password2Rules"
+              label="Repeat password"
+              required
+            ></v-text-field>
+
+            <v-btn :disabled="!valid" color="success" @click="register()">Register</v-btn>
+          </v-form>
+        </v-card-title>
+        <v-card-actions class="d-flex">
+          <p class="subheading">
+            Have An Account?
+            <router-link to="/login">Login</router-link>
+          </p>
+        </v-card-actions>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
@@ -70,11 +75,20 @@ import { urls } from '../mixins/urls.js'
 export default {
   data() {
     return {
-      errors: ''
+      errors: '',
+      valid: false,
+      password: '',
+      passwordRules: [
+        v => !!v || 'Password is required',
+        v => (v && v.length >= 6) || 'Password must be more than 6 characters'
+      ],
+      email: '',
+      emailRules: [v => !!v || 'E-mail is required', v => /.+@.+/.test(v) || 'E-mail must be valid'],
+      name: '',
+      nameRules: [v => (v && v.length >= 3 && v.length < 25) || 'Name must be more than 3 and less than 25 characters'],
+      password2: '',
+      password2Rules: [v => (v && v === this.password) || "Passwords don't match"]
     }
-    //   },
-    //   async mounted () {
-    //     vm.patrons = await vm.$store.dispatch('hall:getPatrons', { page: 0 })
   },
   methods: {
     async register() {
@@ -88,16 +102,25 @@ export default {
       const responseData = await response.json()
 
       if (response.status === 200) {
-        this.$refs.success.classList.remove('d-none')
+        this.$refs.success.$el.classList.remove('d-none')
         this.$refs.failure.classList.add('d-none')
       } else {
         this.errors = responseData
         this.$refs.failure.classList.remove('d-none')
-        this.$refs.success.classList.add('d-none')
+        this.$refs.success.$el.classList.add('d-none')
       }
     }
   }
 }
 </script>
 
-<style></style>
+<style scoped>
+.v-form {
+  width: 100%;
+}
+.success a {
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+}
+</style>

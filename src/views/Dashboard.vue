@@ -117,8 +117,8 @@ export default {
     viewMode: function() {
       this.getReport(setMidnight(new Date(this.date)))
     },
-    dataType: function() { 
-      this.getReport() 
+    dataType: function() {
+      this.getReport()
     }
   }
 }
