@@ -10,6 +10,9 @@ export default {
   props: {
     websites: {
       type: Array
+    },
+    dataType: {
+      type: String
     }
   },
   computed: {
@@ -37,31 +40,43 @@ export default {
   },
   methods: {
     drawChart() {
-      let chartData = [...this.websites]
-      let labels = []
-      let data = []
-      let backgroundColor = []
-      chartData.sort((a, b) => {
+      const domains = this.dataType === 'domains'
+      const websites = [...this.websites]
+      let chartData = { labels: [], datasets: [{ backgroundColor: [], data: [] }] }
+      websites.sort((a, b) => {
         return b.timeSpent - a.timeSpent
       })
-      chartData.forEach((website, index) => {
-        if (index < websitesDisplayed) {
-          labels.push(website.url)
-          data.push(website.timeSpent)
-          backgroundColor.push(colors[Object.keys(colors)[index]].accent1)
-        } else {
-          if (index === websitesDisplayed) data[websitesDisplayed] = 0
-          labels[websitesDisplayed] = 'other'
-          data[websitesDisplayed] += website.timeSpent
-          backgroundColor[websitesDisplayed] = colors[Object.keys(colors)[websitesDisplayed]].accent1
-        }
-      })
-      chartData = { labels: labels, datasets: [{ backgroundColor: backgroundColor, data: data }] }
+      domains
+        ? websites.forEach((website, index) => {
+            if (index < websitesDisplayed) {
+              chartData.labels.push(website.url)
+              chartData.datasets[0].data.push(website.timeSpent)
+              chartData.datasets[0].backgroundColor.push(colors[Object.keys(colors)[index]].accent1)
+            } else {
+              if (index === websitesDisplayed) chartData.datasets[0].data[websitesDisplayed] = 0
+              chartData.labels[websitesDisplayed] = 'other'
+              chartData.datasets[0].data[websitesDisplayed] += website.timeSpent
+              chartData.datasets[0].backgroundColor[websitesDisplayed] =
+                colors[Object.keys(colors)[websitesDisplayed]].accent1
+            }
+          })
+        : websites.forEach((website, index) => {
+            if (chartData.labels.includes(website.category)) {
+              chartData.datasets[0].data[website.category] += website.timeSpent
+            } else {
+              chartData.labels.push(website.category)
+              chartData.datasets[0].data.push(website.timeSpent)
+              chartData.datasets[0].backgroundColor.push(colors[Object.keys(colors)[index]].accent1)
+            }
+          })
       this.renderChart(chartData, this.options)
     }
   },
   watch: {
     websites: function() {
+      this.drawChart()
+    },
+    dataType: function() {
       this.drawChart()
     }
   }

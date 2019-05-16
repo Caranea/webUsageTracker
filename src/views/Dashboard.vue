@@ -39,9 +39,9 @@
           </v-flex>
           <v-divider class="my-2" inset vertical></v-divider>
           <v-flex>
-            <v-btn-toggle v-model="DataType" class="transparent" max="100" mandatory>
-              <v-btn small :value="domains" flat>Domains</v-btn>
-              <v-btn small :value="categories" flat>Categories</v-btn>
+            <v-btn-toggle v-model="dataType" class="transparent" max="100" mandatory>
+              <v-btn small :value="'domains'" flat>Domains</v-btn>
+              <v-btn small :value="'categories'" flat>Categories</v-btn>
             </v-btn-toggle>
           </v-flex>
         </v-layout>
@@ -60,8 +60,9 @@
         <v-btn class="mr-0" small color="primary">Download PDF report</v-btn>
       </v-flex>
       <v-flex>
-        <websites-table v-if="viewMode === 'table'" :websites="websites"></websites-table>
-        <websites-chart v-if="viewMode === 'chart'" :websites="websites"></websites-chart>
+        <websites-table v-if="viewMode === 'table'" :websites="websites" :dataType="dataType"></websites-table>
+        <websites-chart v-if="viewMode === 'chart'" :websites="websites" :dataType="dataType"></websites-chart>
+        <div v-if="viewMode === 'chart' && !websites.length">No data available</div>
       </v-flex>
     </v-layout>
   </v-container>
@@ -93,7 +94,8 @@ export default {
       firstDayOfTheMonth: firstDayOfTheMonth,
       date: '',
       period: [0],
-      dataType: [0],
+      dataTypeDisabled: true,
+      dataType: 'domains',
       viewMode: 'table'
     }
   },
@@ -103,11 +105,9 @@ export default {
   methods: {
     async getReport(from, to) {
       this.loading = true
-      const milliseconds = this.viewMode === 'chart'
+      const milliseconds = this.viewMode === 'chart' || this.dataType === 'categories'
       let report = await fetchReport(from, to, milliseconds)
-      if (report.websites) {
-        this.websites = report.websites
-      }
+      if (report.websites) this.websites = report.websites
       this.dialog = false
       this.loading = false
       this.date = from ? dateOnlyFormat(from) : this.today
@@ -116,6 +116,9 @@ export default {
   watch: {
     viewMode: function() {
       this.getReport(setMidnight(new Date(this.date)))
+    },
+    dataType: function() { 
+      this.getReport() 
     }
   }
 }
