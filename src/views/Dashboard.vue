@@ -62,7 +62,7 @@
       <v-flex>
         <websites-table v-if="viewMode === 'table'" :websites="websites" :dataType="dataType"></websites-table>
         <websites-chart v-if="viewMode === 'chart'" :websites="websites" :dataType="dataType"></websites-chart>
-        <div v-if="viewMode === 'chart' && !websites.length">No data available</div>
+        <div v-if="viewMode === 'chart' && !websites.length" class="no-data">No data available</div>
       </v-flex>
     </v-layout>
   </v-container>
@@ -127,6 +127,12 @@ export default {
 <style>
 .info-span {
   min-width: 400px;
+}
+.no-data {
+    position: absolute;
+    top: 175px;
+    width: 100%;
+    font-size: 18px;
 }
 .dashboard table.v-table tbody td,
 table.v-table tbody th {
