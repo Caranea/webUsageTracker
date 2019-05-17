@@ -45,7 +45,9 @@ function timeFromMs(millisec) {
       Math.floor(parseInt(minutes) / 60) < 10
         ? '0' + Math.floor(parseInt(minutes) / 60)
         : Math.floor(parseInt(minutes) / 60)
-    minutes = parseInt(minutes) - parseInt(hours) * 60
+    minutes = (parseInt(minutes) - parseInt(hours) * 60) < 10
+    ? '0' + (parseInt(minutes) - parseInt(hours) * 60)
+    : (parseInt(minutes) - parseInt(hours) * 60)
   }
   seconds =
     Math.floor(parseInt(seconds) % 60) < 10

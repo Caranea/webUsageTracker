@@ -64,9 +64,10 @@ export default {
             if (chartData.labels.includes(website.category)) {
               chartData.datasets[0].data[website.category] += website.timeSpent
             } else {
+              const colorCount = index === 0 ? 0 : chartData.datasets[0].backgroundColor.length + 1
               chartData.labels.push(website.category)
               chartData.datasets[0].data.push(website.timeSpent)
-              chartData.datasets[0].backgroundColor.push(colors[Object.keys(colors)[index]].accent1)
+              chartData.datasets[0].backgroundColor.push(colors[Object.keys(colors)[colorCount]].accent1)
             }
           })
       this.renderChart(chartData, this.options)
