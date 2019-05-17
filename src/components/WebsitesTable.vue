@@ -73,7 +73,8 @@ export default {
           { text: 'Category', align: 'center', width: '50%', value: 'category' },
           { text: 'Total time', align: 'center', width: '50%', value: 'timeSpent' }
         ]
-        this.websites.forEach((website, index) => {
+        this.categories = []
+        this.websites.forEach(website => {
           if (this.categories.filter(el => el.category === website.category).length === 0) {
             this.categories.push({ category: website.category, timeSpent: website.timeSpent })
           } else {

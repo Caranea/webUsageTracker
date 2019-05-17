@@ -11,16 +11,8 @@
         </v-container>
         <v-card-title class="pt-0">
           <v-form ref="form" v-model="valid" lazy-validation>
-            <v-chip
-              class="info-span ml-0 d-none"
-              label
-              color="success"
-              ref="success"
-              text-color="white"
-            >
-              <v-avatar>
-                <v-icon color="white">done</v-icon>
-              </v-avatar>Registration successful! You can now 
+            <v-chip class="info-span ml-0 d-none" label color="success" ref="success" text-color="white">
+              <v-avatar> <v-icon color="white">done</v-icon> </v-avatar>Registration successful! You can now
               <router-link to="/login" text-color="white">&nbsp;login</router-link>
             </v-chip>
             <v-layout ref="failure">
@@ -30,7 +22,7 @@
                     <v-icon color="error">error</v-icon>
                   </v-list-tile-avatar>
                   <v-list-tile-content>
-                    <v-list-tile-title>{{error.error}}</v-list-tile-title>
+                    <v-list-tile-title>{{ error.error }}</v-list-tile-title>
                   </v-list-tile-content>
                 </v-list-tile>
               </v-list>
@@ -98,6 +90,7 @@ export default {
         password: this.password,
         password2: this.password2
       }
+
       const response = await post(urls.register, registerData)
       const responseData = await response.json()
 

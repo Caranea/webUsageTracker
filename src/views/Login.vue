@@ -38,7 +38,6 @@
       </v-card>
     </v-flex>
   </v-layout>
-  <v-container grid-list-xl class="dashboard"></v-container>
 </template>
 
 <script>
