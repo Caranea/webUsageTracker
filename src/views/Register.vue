@@ -15,18 +15,12 @@
               <v-avatar> <v-icon color="white">done</v-icon> </v-avatar>Registration successful! You can now
               <router-link to="/login" text-color="white">&nbsp;login</router-link>
             </v-chip>
-            <v-layout ref="failure">
-              <v-list>
-                <v-list-tile v-for="error in errors" :key="error.id" avatar>
-                  <v-list-tile-avatar>
-                    <v-icon color="error">error</v-icon>
-                  </v-list-tile-avatar>
-                  <v-list-tile-content>
-                    <v-list-tile-title>{{ error.error }}</v-list-tile-title>
-                  </v-list-tile-content>
-                </v-list-tile>
-              </v-list>
-            </v-layout>
+            <v-chip class="ml-0 d-none failure" label color="error" ref="failure" text-color="white">
+              <v-avatar>
+                <v-icon>error</v-icon>
+              </v-avatar>
+              {{ error }}
+            </v-chip>
             <v-text-field v-model="name" :rules="nameRules" label="Name" required></v-text-field>
             <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
             <v-text-field
@@ -67,7 +61,7 @@ import { urls } from '../mixins/urls.js'
 export default {
   data() {
     return {
-      errors: '',
+      error: '',
       valid: false,
       password: '',
       passwordRules: [
@@ -96,10 +90,10 @@ export default {
 
       if (response.status === 200) {
         this.$refs.success.$el.classList.remove('d-none')
-        this.$refs.failure.classList.add('d-none')
+        this.$refs.failure.$el.classList.add('d-none')
       } else {
-        this.errors = responseData
-        this.$refs.failure.classList.remove('d-none')
+        this.error = responseData.error
+        this.$refs.failure.$el.classList.remove('d-none')
         this.$refs.success.$el.classList.add('d-none')
       }
     }
@@ -110,6 +104,10 @@ export default {
 <style scoped>
 .v-form {
   width: 100%;
+}
+.failure {
+  min-width: 320px;
+  font-size: 12px;
 }
 .success a {
   font-weight: bold;

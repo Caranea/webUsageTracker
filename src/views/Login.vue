@@ -11,7 +11,7 @@
         </v-container>
         <v-card-title>
           <v-form ref="form" v-model="valid" lazy-validation>
-            <v-chip class="info-span ml-0 d-none" label color="error" ref="failure" text-color="white">
+            <v-chip class="ml-0 d-none failure" label color="error" ref="failure" text-color="white">
               <v-avatar>
                 <v-icon>error</v-icon>
               </v-avatar>
@@ -62,7 +62,7 @@ export default {
   methods: {
     async login() {
       const email = this.email
-      const password = this.password
+      const password = this.password;
       const response = await post(urls.login, { email, password })
       const responseData = await response.json()
       if (response.status === 200) {
@@ -70,7 +70,7 @@ export default {
         saveUser(responseData)
         this.$router.push({ name: 'dashboard', params: { user: responseData.user } })
       } else {
-        this.error = responseData.error
+        this.error = responseData.error;
         this.$refs.failure.$el.classList.remove('d-none')
       }
     }
@@ -80,5 +80,8 @@ export default {
 <style scoped>
 .v-form {
   width: 100%;
+}
+.failure {
+  min-width: 320px;
 }
 </style>
