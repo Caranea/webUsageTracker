@@ -1,13 +1,6 @@
 <template>
   <div>
-    <v-data-table
-      v-if="domains"
-      :pagination.sync="pagination"
-      :headers="headers"
-      :items="websites"
-      :search="search"
-      class="elevation-1"
-    >
+    <v-data-table v-if="domains" :pagination.sync="pagination" :headers="headers" :items="websites" class="elevation-1">
       <template v-slot:items="props">
         <td>{{ props.item.url }}</td>
         <td>{{ props.item.timeSpent }}</td>
@@ -19,7 +12,6 @@
       :pagination.sync="pagination"
       :headers="headers"
       :items="categories"
-      :search="search"
       class="elevation-1"
     >
       <template v-slot:items="props">

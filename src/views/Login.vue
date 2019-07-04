@@ -62,7 +62,7 @@ export default {
   methods: {
     async login() {
       const email = this.email
-      const password = this.password;
+      const password = this.password
       const response = await post(urls.login, { email, password })
       const responseData = await response.json()
       if (response.status === 200) {
@@ -70,7 +70,7 @@ export default {
         saveUser(responseData)
         this.$router.push({ name: 'dashboard', params: { user: responseData.user } })
       } else {
-        this.error = responseData.error;
+        this.error = responseData.error
         this.$refs.failure.$el.classList.remove('d-none')
       }
     }

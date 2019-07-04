@@ -129,10 +129,10 @@ export default {
   min-width: 400px;
 }
 .no-data {
-    position: absolute;
-    top: 175px;
-    width: 100%;
-    font-size: 18px;
+  position: absolute;
+  top: 175px;
+  width: 100%;
+  font-size: 18px;
 }
 .dashboard table.v-table tbody td,
 table.v-table tbody th {
